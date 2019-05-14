@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'path';
 
 const app = express();
 
@@ -33,7 +34,7 @@ const keys = Object.keys(ALBUMS);
 const values = Object.values(ALBUMS);
 
 // Static
-app.use('/', express.static(__dirname + '/images'));
+app.use('/images', express.static(__dirname + '/images'));
 
 app.get('/albums', (req, res) => {
   res.json(keys);
