@@ -33,7 +33,7 @@ const keys = Object.keys(ALBUMS);
 const values = Object.values(ALBUMS);
 
 // Static
-app.use('/static', express.static(__dirname + '/images'));
+app.use('/', express.static(__dirname + '/images'));
 
 app.get('/albums', (req, res) => {
   res.json(keys);
