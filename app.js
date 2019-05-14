@@ -40,10 +40,10 @@ app.get('/albums', (req, res) => {
 });
 
 app.get('/albums/album:id', (req, res, next) => {
-  const id = req.params.id;
+  const id = Number(req.params.id);
 
-  if (id < keys.length) {
-    const content = Object.values(values[id])[1];
+  if ((id > 0) && (id <= keys.length)) {
+    const content = Object.values(values[id - 1])[1];
     res.json(content);
   } else {
     next();
