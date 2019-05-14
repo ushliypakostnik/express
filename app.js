@@ -39,10 +39,21 @@ app.get('/albums', (req, res) => {
   res.json(keys);
 });
 
-app.get('/albums/album:id', (req, res) => {
+app.get('/albums/album:id', (req, res, next) => {
   const id = req.params.id;
-  const content = Object.values(values[id])[1];
-  res.json(content);
+
+  if (id < keys.length) {
+    const content = Object.values(values[id])[1];
+    res.json(content);
+  } else {
+    next();
+  }
+});
+
+// Others
+app.use(function(req, res) {
+    res.status(404);
+    res.send('Page not found!!!');
 });
 
 app.listen(8082, () => {
