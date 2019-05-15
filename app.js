@@ -1,41 +1,47 @@
 import express from 'express';
 import path from 'path';
 
+import fs from 'fs';
+import sizeOf from 'image-size';
+
 const app = express();
 
-const ALBUMS = {
-  album1: {
-    name: 'album1',
-    content: [
-      ['/images/album1/image-1.jpg',[1000,700]],
-      ['/images/album1/image-2.jpg',[1000,700]],
-      ['/images/album1/image-3.jpg',[1000,700]],
-    ]
-  },
-  album2: {
-    name: 'album2',
-    content: [
-      ['/images/album2/image-1.jpg',[1000,700]],
-      ['/images/album2/image-2.jpg',[1000,700]],
-      ['/images/album2/image-3.jpg',[1000,700]],
-    ]
-  },
-  album3: {
-    name: 'album3',
-    content: [
-      ['/images/album3/image-1.jpg',[1000,700]],
-      ['/images/album3/image-2.jpg',[1000,700]],
-      ['/images/album3/image-3.jpg',[1000,700]],
-    ]
-  },
+// Static
+app.use('/images', express.static(__dirname + '/images/'));
+
+function getUrl(url) {
+  try {
+    return fs.readdirSync(__dirname + url);
+  } catch(err) {
+    console.error(err);
+  }
 }
 
-const keys = Object.keys(ALBUMS);
-const values = Object.values(ALBUMS);
+function getImage(url) {
+  let width = sizeOf(__dirname + url).width;
+  let height = sizeOf(__dirname + url).height;
+  let src = 'http://127.0.0.1:8082' + url;
+  return {src, width, height}
+}
 
-// Static
-app.use('/images', express.static(__dirname + '/images'));
+const ALBUMS = JSON.parse(fs.readFileSync('config.txt', 'utf-8'));
+const ALBUMSARR = Object.entries(ALBUMS);
+const items = ALBUMSARR.length;
 
+const albumNames = [];
+const contents = [];
+for (let i = 0; i < items; i++) {
+  albumNames.push(Object.values(ALBUMSARR[i][1]));
+
+  let images = getUrl('/images/album' + (i + 1)).length;
+  let content = [];
+  for (let k = 0; k < images; k++) {
+    content.push(getImage('/images/album' + (i + 1) +'/image-' + (k + 1) + '.jpg'));
+  }
+  contents.push(content);
+}
+
+// CORS
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -43,14 +49,14 @@ app.use(function(req, res, next) {
 });
 
 app.get('/albums', (req, res) => {
-  res.json(keys);
+  res.json(albumNames);
 });
 
 app.get('/albums/album:id', (req, res, next) => {
   const id = Number(req.params.id);
 
-  if ((id > 0) && (id <= keys.length)) {
-    const content = Object.values(values[id - 1])[1];
+  if ((id > 0) && (id <= items)) {
+    const content = Object.values(contents[id - 1]);
     res.json(content);
   } else {
     next();

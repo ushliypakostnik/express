@@ -1,0 +1,11 @@
+{
+"album1": {
+  "name": "album1"
+},
+"album2": {
+  "name": "album2"
+},
+"album3": {
+  "name": "album3"
+}
+}
