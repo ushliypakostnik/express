@@ -9,7 +9,16 @@ const app = express();
 // Static
 app.use('/images', express.static(__dirname + '/images/'));
 
-function getUrl(url) {
+// CORS
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+// Data
+
+function getConfig(url) {
   try {
     return fs.readdirSync(__dirname + url);
   } catch(err) {
@@ -17,7 +26,7 @@ function getUrl(url) {
   }
 }
 
-function getImage(url) {
+function getData(url) {
   let width = sizeOf(__dirname + url).width;
   let height = sizeOf(__dirname + url).height;
   let src = 'http://127.0.0.1:8082' + url;
@@ -28,28 +37,23 @@ const ALBUMS = JSON.parse(fs.readFileSync('config.txt', 'utf-8'));
 const ALBUMSARR = Object.entries(ALBUMS);
 const items = ALBUMSARR.length;
 
-const albumNames = [];
+const names = [];
 const contents = [];
 for (let i = 0; i < items; i++) {
-  albumNames.push(Object.values(ALBUMSARR[i][1]));
+  names.push(Object.values(ALBUMSARR[i][1]));
 
-  let images = getUrl('/images/album' + (i + 1)).length;
+  let images = getConfig('/images/album' + (i + 1)).length;
   let content = [];
   for (let k = 0; k < images; k++) {
-    content.push(getImage('/images/album' + (i + 1) +'/image-' + (k + 1) + '.jpg'));
+    content.push(getData('/images/album' + (i + 1) +'/image-' + (k + 1) + '.jpg'));
   }
   contents.push(content);
 }
 
-// CORS
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+// API
 
 app.get('/albums', (req, res) => {
-  res.json(albumNames);
+  res.json(names);
 });
 
 app.get('/albums/album:id', (req, res, next) => {
