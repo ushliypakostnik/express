@@ -40,7 +40,7 @@ function getConfig(url) {
 function getData(url) {
   let width = sizeOf(__dirname + url).width;
   let height = sizeOf(__dirname + url).height;
-  let src = 'http://127.0.0.1:8082' + url;
+  let src = app.get('STATICDIR') + url;
   return {src, width, height}
 }
 
