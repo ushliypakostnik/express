@@ -6,6 +6,17 @@ import sizeOf from 'image-size';
 
 const app = express();
 
+// Environment variable
+app.set('NODE_ENV', (process.env.NODE_ENV || 'development'));
+if (app.get('NODE_ENV') === 'development') {
+  app.set('STATICDIR', 'http://127.0.0.1:8082');
+} else {
+  app.set('STATICDIR', 'http://api.samovarov.pro');
+}
+
+console.log('process.env.NODE_ENV:', process.env.NODE_ENV);
+console.log('STATICDIR:', app.get('STATICDIR'));
+
 // Static
 app.use('/images', express.static(__dirname + '/images/'));
 
@@ -73,6 +84,8 @@ app.use(function(req, res) {
     res.send('Page not found!!!');
 });
 
-app.listen(8082, () => {
-  console.log('Example app listening on port 8082!');
+// Server
+app.set('PORT', (process.env.PORT || 8082));
+app.listen(app.get('PORT'), () => {
+  console.log('Example app listening on port ' + app.get('PORT') + '!');
 });

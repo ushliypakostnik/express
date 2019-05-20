@@ -4,12 +4,14 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js --exec babel-node --presets babel-preset-env",
+    "start": "cross-env NODE_ENV=development nodemon app.js --exec babel-node --presets babel-preset-env",
+    "prod": "cross-env NODE_ENV=production nodemon app.js --exec babel-node --presets babel-preset-env",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cross-env": "^5.2.0",
     "express": "^4.16.4",
     "fs": "0.0.1-security",
     "image-size": "^0.7.4"
