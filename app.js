@@ -45,7 +45,7 @@ for (let i = 0; i < items; i++) {
   let images = getConfig('/images/album' + (i + 1)).length;
   let content = [];
   for (let k = 0; k < images; k++) {
-    content.push(getData('/images/album' + (i + 1) +'/image-' + (k + 1) + '.jpg'));
+    content.push(getData('/images/album' + (i + 1) +'/' + (k + 1) + '.jpg'));
   }
   contents.push(content);
 }

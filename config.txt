@@ -1,11 +1,11 @@
 {
 "album1": {
-  "name": "album1"
+  "name": "pinhole"
 },
 "album2": {
-  "name": "album2"
+  "name": "wedding"
 },
 "album3": {
-  "name": "album3"
+  "name": "concert"
 }
 }
