@@ -9,13 +9,13 @@ const app = express();
 // Environment variable
 app.set('NODE_ENV', (process.env.NODE_ENV || 'development'));
 if (app.get('NODE_ENV') === 'development') {
-  app.set('STATICDIR', 'http://127.0.0.1:8082');
+  app.set('MEDIA_URL', 'http://127.0.0.1:8082');
 } else {
-  app.set('STATICDIR', 'http://api.samovarov.pro');
+  app.set('MEDIA_URL', 'http://api.samovarov.pro');
 }
 
 console.log('process.env.NODE_ENV:', process.env.NODE_ENV);
-console.log('STATICDIR:', app.get('STATICDIR'));
+console.log('MEDIA_URL:', app.get('MEDIA_URL'));
 
 // Static
 app.use('/images', express.static(__dirname + '/images/'));
@@ -40,7 +40,7 @@ function getConfig(url) {
 function getData(url) {
   let width = sizeOf(__dirname + url).width;
   let height = sizeOf(__dirname + url).height;
-  let src = app.get('STATICDIR') + url;
+  let src = app.get('MEDIA_URL') + url;
   return {src, width, height}
 }
 
@@ -87,5 +87,5 @@ app.use(function(req, res) {
 // Server
 app.set('PORT', (process.env.PORT || 8082));
 app.listen(app.get('PORT'), () => {
-  console.log('Example app listening on port ' + app.get('PORT') + '!');
+  console.log('App listening on port ' + app.get('PORT') + '!');
 });
