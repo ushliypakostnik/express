@@ -7,8 +7,6 @@ const development = {
   PORT: process.env.PORT || 8082
 };
 
-console.log(development.MEDIA_URL);
-
 const production = {
   MEDIA_URL: process.env.MEDIA_URL || 'http://api.samovarov.pro',
   PORT: process.env.PORT || 8082
