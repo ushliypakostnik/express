@@ -1,21 +1,12 @@
 import express from 'express';
 import path from 'path';
 
+import config, { content } from './config'
+
 import fs from 'fs';
 import sizeOf from 'image-size';
 
 const app = express();
-
-// Environment variable
-app.set('NODE_ENV', (process.env.NODE_ENV || 'development'));
-if (app.get('NODE_ENV') === 'development') {
-  app.set('MEDIA_URL', 'http://127.0.0.1:8082');
-} else {
-  app.set('MEDIA_URL', 'http://api.samovarov.pro');
-}
-
-console.log('process.env.NODE_ENV:', process.env.NODE_ENV);
-console.log('MEDIA_URL:', app.get('MEDIA_URL'));
 
 // Static
 app.use('/images', express.static(__dirname + '/images/'));
@@ -29,36 +20,46 @@ app.use(function(req, res, next) {
 
 // Data
 
-function getConfig(url) {
+function getAlbum(path) {
   try {
-    return fs.readdirSync(__dirname + url);
+    return fs.readdirSync(__dirname + path);
   } catch(err) {
     console.error(err);
   }
 }
 
-function getData(url) {
-  let width = sizeOf(__dirname + url).width;
-  let height = sizeOf(__dirname + url).height;
-  let src = app.get('MEDIA_URL') + url;
-  return {src, width, height}
+function getData(path) {
+  let width, height, src;
+  try {
+    src = config.MEDIA_URL+ path;
+    width = sizeOf(__dirname + path).width;
+    height = sizeOf(__dirname + path).height;
+    return {src, width, height}
+  } catch(err) {
+    console.error(err);
+  }
 }
 
-const ALBUMS = JSON.parse(fs.readFileSync('config.txt', 'utf-8'));
-const ALBUMSARR = Object.entries(ALBUMS);
+const ALBUMSARR = Object.entries(content);
 const items = ALBUMSARR.length;
 
 const names = [];
-const contents = [];
+const albums = [];
 for (let i = 0; i < items; i++) {
   names.push(Object.values(ALBUMSARR[i][1]));
 
-  let images = getConfig('/images/album' + (i + 1)).length;
-  let content = [];
-  for (let k = 0; k < images; k++) {
-    content.push(getData('/images/album' + (i + 1) +'/' + (k + 1) + '.jpg'));
+  let images = 0;
+  try {
+    images = getAlbum('/images/album' + (i + 1)).length;
+  } catch(err) {
+    console.error(err);
   }
-  contents.push(content);
+
+  let album = [];
+  for (let k = 0; k < images; k++) {
+    album.push(getData('/images/album' + (i + 1) +'/' + (k + 1) + '.jpg'));
+  }
+  albums.push(album);
 }
 
 // API
@@ -70,10 +71,11 @@ app.get('/albums', (req, res) => {
 app.get('/albums/album:id', (req, res, next) => {
   const id = Number(req.params.id);
 
-  if ((id > 0) && (id <= items)) {
-    const content = Object.values(contents[id - 1]);
-    res.json(content);
-  } else {
+  try {
+    const data = Object.values(albums[id - 1]);
+    res.json(data);
+  } catch(err) {
+    console.error(err);
     next();
   }
 });
@@ -87,5 +89,5 @@ app.use(function(req, res) {
 // Server
 app.set('PORT', (process.env.PORT || 8082));
 app.listen(app.get('PORT'), () => {
-  console.log('App listening on port ' + app.get('PORT') + '!');
+  console.log('App listening on port ' + config.PORT + '!');
 });
