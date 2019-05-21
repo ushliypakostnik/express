@@ -1,9 +1,13 @@
+require('dotenv').config();
+
 const env = process.env.NODE_ENV;
 
 const development = {
   MEDIA_URL: process.env.MEDIA_URL || 'http://127.0.0.1:8082',
   PORT: process.env.PORT || 8082
 };
+
+console.log(development.MEDIA_URL);
 
 const production = {
   MEDIA_URL: process.env.MEDIA_URL || 'http://api.samovarov.pro',
@@ -24,8 +28,7 @@ export const content = {
 
 const config = {
   development,
-  production,
-  content
+  production
 };
 
 export default config[env];
