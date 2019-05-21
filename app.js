@@ -31,7 +31,7 @@ function getAlbum(path) {
 function getData(path) {
   let width, height, src;
   try {
-    src = config.MEDIA_URL+ path;
+    src = config.MEDIA_URL + path;
     width = sizeOf(__dirname + path).width;
     height = sizeOf(__dirname + path).height;
     return {src, width, height}
