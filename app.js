@@ -87,7 +87,6 @@ app.use(function(req, res) {
 });
 
 // Server
-app.set('PORT', (process.env.PORT || 8082));
-app.listen(app.get('PORT'), () => {
+app.listen(config.PORT, () => {
   console.log('App listening on port ' + config.PORT + '!');
 });
