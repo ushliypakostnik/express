@@ -1,3 +1,23 @@
-cd F:/projects/react/proj05/back
+Samovarov.pro backend project
+=============================
 
-http://localhost:8082/
+Deploy
+------
+
+Установка зависимостей npm packages
+
+    $ npm install
+
+Запуск сервера для разработки
+-----------------------------
+
+    $ npm start
+
+    http://localhost:8082/
+
+Cборка
+------
+
+Сборка проекта в продакшен
+
+    $ npm run prod
