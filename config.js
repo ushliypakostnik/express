@@ -12,18 +12,6 @@ const production = {
   PORT: process.env.PORT || 8082
 };
 
-export const content = {
-  album1: {
-    name: "pinhole"
-  },
-  album2: {
-    name: "wedding"
-  },
-  album3: {
-    name: "concert"
-  }
-};
-
 const config = {
   development,
   production

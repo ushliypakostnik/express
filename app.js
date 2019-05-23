@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 
-import config, { content } from './config'
+import config from './config'
 
 import fs from 'fs';
 import sizeOf from 'image-size';
@@ -40,6 +40,7 @@ function getData(path) {
   }
 }
 
+const content = JSON.parse(fs.readFileSync('content.json'));
 const ALBUMSARR = Object.entries(content);
 const items = ALBUMSARR.length;
 
