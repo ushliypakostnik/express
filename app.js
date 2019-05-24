@@ -74,11 +74,11 @@ app.get('/albums/album:id', (req, res, next) => {
 
   try {
     const data = Object.values(albums[id - 1]);
-    res.json(data);
   } catch(err) {
     console.error(err);
     next();
   }
+  res.json(data);
 });
 
 // Others
