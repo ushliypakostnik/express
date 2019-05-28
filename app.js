@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 
-import config from './config'
+import config from './config';
 
 import fs from 'fs';
 import sizeOf from 'image-size';
