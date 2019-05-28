@@ -9,7 +9,7 @@ import sizeOf from 'image-size';
 const app = express();
 
 // Static
-app.use('/images', express.static(__dirname + '/images/'));
+if (config.STATIC_SERVE) {app.use('/images', express.static(__dirname + '/images/'));}
 
 // CORS
 app.use(function(req, res, next) {
@@ -51,14 +51,14 @@ for (let i = 0; i < items; i++) {
 
   let images = 0;
   try {
-    images = getAlbum('/images/album' + (i + 1)).length;
+    images = getAlbum(`/images/album${i + 1}`).length;
   } catch(err) {
     console.error(err);
   }
 
   let album = [];
   for (let k = 0; k < images; k++) {
-    album.push(getData('/images/album' + (i + 1) +'/' + (k + 1) + '.jpg'));
+    album.push(getData(`/images/album${i + 1}/${k + 1}.jpg`));
   }
   albums.push(album);
 }
@@ -71,14 +71,15 @@ app.get('/albums', (req, res) => {
 
 app.get('/albums/album:id', (req, res, next) => {
   const id = Number(req.params.id);
+  let data;
 
   try {
-    const data = Object.values(albums[id - 1]);
-    res.json(data);
+    data = Object.values(albums[id - 1]);
   } catch(err) {
     console.error(err);
     next();
   }
+  res.json(data);
 });
 
 // Others
