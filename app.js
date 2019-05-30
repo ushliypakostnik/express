@@ -8,6 +8,8 @@ import sizeOf from 'image-size';
 
 const app = express();
 
+const CONTENT = ["pinhole", "wedding", "concert"];
+
 // Static
 if (config.STATIC_SERVE) {app.use('/images', express.static(__dirname + '/images/'));}
 
@@ -40,33 +42,28 @@ function getData(path) {
   }
 }
 
-const content = JSON.parse(fs.readFileSync('content.json'));
-const ALBUMSARR = Object.entries(content);
-const items = ALBUMSARR.length;
+const items = CONTENT.length;
 
-const names = [];
 const albums = [];
 for (let i = 0; i < items; i++) {
-  names.push(Object.values(ALBUMSARR[i][1]));
-
-  let images = 0;
+  let images = [];
   try {
-    images = getAlbum(`/images/album${i + 1}`).length;
+    images = getAlbum(`/images/album${i + 1}`);
   } catch(err) {
     console.error(err);
   }
 
-  let album = [];
-  for (let k = 0; k < images; k++) {
-    album.push(getData(`/images/album${i + 1}/${k + 1}.jpg`));
-  }
+  const album = [];
+  images.forEach(function(item, k, arr) {
+    album.push(getData(`/images/album${i + 1}/` + item));
+  });
   albums.push(album);
 }
 
 // API
 
 app.get('/albums', (req, res) => {
-  res.json(names);
+  res.json(CONTENT);
 });
 
 app.get('/albums/album:id', (req, res, next) => {
