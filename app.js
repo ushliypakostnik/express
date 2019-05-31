@@ -37,6 +37,10 @@ CONTENT.forEach(function(item, i) {
 
   images = fs.readdirSync(path.join(config.MEDIA_DIR, item['id']));
   images.forEach(function(image, k) {
+    if (!path.extname(image)) {
+        return;
+    }
+
     album.push(getData(item['id'], image));
   });
 
