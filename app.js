@@ -12,7 +12,8 @@ const app = express();
 const CONTENT = [
   {'id': 'pinhole', 'name': 'pinhole'},
   {'id': 'wedding', 'name': 'wedding'},
-  {'id': 'concert', 'name': 'concert'}
+  {'id': 'concert', 'name': 'concert'},
+  {'id': 'pixelart', 'name': 'pixelart'},
 ];
 
 // Data
