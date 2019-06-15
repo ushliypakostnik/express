@@ -16,7 +16,7 @@ function getData(album, image) {
 
   fullPath = path.join(config.MEDIA_DIR, album, image);
 
-  src = config.MEDIA_URL + '/' + album + '/' + image;
+  src = config.MEDIA_URL + '/' + album + '/{src}/' + image;
   width = sizeOf(fullPath).width;
   height = sizeOf(fullPath).height;
 
