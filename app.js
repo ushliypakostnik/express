@@ -9,13 +9,6 @@ import sizeOf from 'image-size';
 
 const app = express();
 
-const CONTENT = [
-  {'id': 'pinhole', 'name': 'pinhole'},
-  {'id': 'wedding', 'name': 'wedding'},
-  {'id': 'concert', 'name': 'concert'},
-  {'id': 'pixelart', 'name': 'pixelart'},
-];
-
 // Data
 
 function getData(album, image) {
@@ -23,7 +16,7 @@ function getData(album, image) {
 
   fullPath = path.join(config.MEDIA_DIR, album, image);
 
-  src = config.MEDIA_URL + '/' + album + '/' + image;
+  src = config.MEDIA_URL + '/' + album + '/{src}/' + image;
   width = sizeOf(fullPath).width;
   height = sizeOf(fullPath).height;
 
@@ -32,7 +25,7 @@ function getData(album, image) {
 
 // Initialization
 const albums = {};
-CONTENT.forEach(function(item, i) {
+config.CONTENT.forEach(function(item, i) {
   const album = [];
   let images = [];
 
@@ -66,7 +59,7 @@ if (config.CORS_ENABLED) {
 // API
 
 app.get('/albums', (req, res) => {
-  res.json(CONTENT);
+  res.json(config.CONTENT);
 });
 
 app.get('/albums/:id', (req, res, next) => {
