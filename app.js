@@ -9,7 +9,7 @@ import sizeOf from 'image-size';
 
 const app = express();
 
-// Data
+// XData
 
 function getData(album, image) {
   let width, height, src, fullPath;
