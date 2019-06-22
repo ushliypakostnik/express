@@ -18,6 +18,7 @@ const CONTENT = [
 
 // Data
 
+
 function getData(album, image) {
   let width, height, src, fullPath;
 
