@@ -3,10 +3,10 @@ require('dotenv').config();
 const env = process.env.NODE_ENV;
 
 const CONTENT = [
-  {'id': 'pinhole', 'name': 'pinhole'},
-  {'id': 'wedding', 'name': 'wedding'},
-  {'id': 'concert', 'name': 'concert'},
-  {'id': 'pixelart', 'name': 'pixelart'},
+  { id: 'pinhole', name: 'pinhole' },
+  { id: 'wedding', name: 'wedding' },
+  { id: 'concert', name: 'concert' },
+  { id: 'pixelart', name: 'pixelart' },
 ];
 
 const development = {
@@ -15,7 +15,7 @@ const development = {
   MEDIA_URL: process.env.MEDIA_URL || 'http://127.0.0.1:8082/media',
   STATIC_SERVE: true,
   CORS_ENABLED: true,
-  CONTENT: CONTENT
+  CONTENT,
 };
 
 const production = {
@@ -24,12 +24,12 @@ const production = {
   MEDIA_URL: process.env.MEDIA_URL || 'http://www.yourserver.com/media',
   STATIC_SERVE: false,
   CORS_ENABLED: false,
-  CONTENT: CONTENT
+  CONTENT,
 };
 
 const config = {
   development,
-  production
+  production,
 };
 
 export default config[env];

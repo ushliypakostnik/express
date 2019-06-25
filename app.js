@@ -2,44 +2,40 @@ import express from 'express';
 import path from 'path';
 import url from 'url';
 
-import config from './config';
-
 import fs from 'fs';
 import sizeOf from 'image-size';
+
+import config from './config';
 
 const app = express();
 
 // Data
 
-
 function getData(album, image) {
-  let width, height, src, fullPath;
+  const src = `${config.MEDIA_URL}/${album}/{src}/${image}`;
+  const fullPath = path.join(config.MEDIA_DIR, album, image);
 
-  fullPath = path.join(config.MEDIA_DIR, album, image);
+  const { width, height } = sizeOf(fullPath);
 
-  src = config.MEDIA_URL + '/' + album + '/{src}/' + image;
-  width = sizeOf(fullPath).width;
-  height = sizeOf(fullPath).height;
-
-  return {src, width, height}
+  return { src, width, height };
 }
 
 // Initialization
 const albums = {};
-config.CONTENT.forEach(function(item, i) {
+config.CONTENT.forEach((item) => {
   const album = [];
   let images = [];
 
-  images = fs.readdirSync(path.join(config.MEDIA_DIR, item['id']));
-  images.forEach(function(image, k) {
+  images = fs.readdirSync(path.join(config.MEDIA_DIR, item.id));
+  images.forEach((image) => {
     if (!path.extname(image)) {
-        return;
+      return;
     }
 
-    album.push(getData(item['id'], image));
+    album.push(getData(item.id, image));
   });
 
-  albums[item['id']] = album;
+  albums[item.id] = album;
 });
 
 // Static
@@ -50,7 +46,7 @@ if (config.STATIC_SERVE) {
 
 // CORS
 if (config.CORS_ENABLED) {
-  app.use(function(req, res, next) {
+  app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     next();
@@ -64,7 +60,7 @@ app.get('/albums', (req, res) => {
 });
 
 app.get('/albums/:id', (req, res, next) => {
-  const id = req.params.id;
+  const { id } = req.params;
   let data;
 
   if (id in albums) {
@@ -77,12 +73,9 @@ app.get('/albums/:id', (req, res, next) => {
 });
 
 // Others
-app.use(function(req, res) {
+app.use((req, res) => {
   res.status(404);
   res.send('Page not found!!!');
 });
 
-// Server
-app.listen(config.PORT, () => {
-  console.log('App listening on port ' + config.PORT + '!');
-});
+module.exports = app;
