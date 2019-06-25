@@ -78,7 +78,4 @@ app.use((req, res) => {
   res.send('Page not found!!!');
 });
 
-// Server
-app.listen(config.PORT, () => {
-  console.log(`App listening on port ${config.PORT}!`);
-});
+module.exports = app;
