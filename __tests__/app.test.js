@@ -5,7 +5,6 @@ import config from '../config';
 import app from '../app';
 
 describe('Test the api', () => {
-
   test('GET /albums', (done) => {
     request(app).get('/albums').then((response) => {
       expect(response.statusCode).toBe(200);

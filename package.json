@@ -8,7 +8,7 @@
     "prod": "cross-env NODE_ENV=production nodemon server.js --exec babel-node --presets babel-preset-env",
     "images": "cross-env NODE_ENV=production nodemon images.js --exec babel-node --presets babel-preset-env",
     "lint": "eslint .",
-    "test": "cross-env NODE_ENV=development jest"
+    "test": "cross-env NODE_ENV=development jest --watch"
   },
   "author": "",
   "license": "ISC",
