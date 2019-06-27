@@ -9,9 +9,6 @@ import config from './config';
 
 const app = express();
 
-
-
-
 // Data
 
 function getData(album, image) {
