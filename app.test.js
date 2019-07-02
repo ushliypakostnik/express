@@ -1,8 +1,8 @@
 import request from 'supertest';
 
-import config from '../config';
+import config from './config';
 
-import app from '../app';
+import app from './app';
 
 describe('test the api', () => {
   test('GET /albums', (done) => {
