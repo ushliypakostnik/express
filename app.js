@@ -78,4 +78,4 @@ app.use((req, res) => {
   res.send('Page not found!!!');
 });
 
-module.exports = app;
+export default app;
