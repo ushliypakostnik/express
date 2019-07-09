@@ -9,22 +9,25 @@ const CONTENT = [
   { id: 'pixelart', name: 'pixelart' },
 ];
 
-const development = {
+const common = {
   PORT: process.env.PORT || 8082,
   MEDIA_DIR: process.env.MEDIA_DIR || 'media',
+  CONTENT,
+}
+
+const development = {
+  ...common,
   MEDIA_URL: process.env.MEDIA_URL || 'http://127.0.0.1:8082/media',
   STATIC_SERVE: true,
   CORS_ENABLED: true,
-  CONTENT,
 };
 
 const production = {
-  PORT: process.env.PORT || 8082,
+  ...common,
   MEDIA_DIR: process.env.MEDIA_DIR || 'media',
   MEDIA_URL: process.env.MEDIA_URL || 'http://www.yourserver.com/media',
   STATIC_SERVE: false,
   CORS_ENABLED: false,
-  CONTENT,
 };
 
 const config = {
