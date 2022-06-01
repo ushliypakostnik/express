@@ -19,7 +19,7 @@
     "fs": "0.0.1-security",
     "image-size": "^0.7.4",
     "nodemon": "^1.19.0",
-    "sharp": "^0.22.1"
+    "sharp": "^0.30.5"
   },
   "devDependencies": {
     "@babel/core": "^7.5.0",
